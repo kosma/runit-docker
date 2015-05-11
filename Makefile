@@ -5,6 +5,8 @@ runit-docker.so: runit-docker.c
 	gcc -shared $(CFLAGS) $(LDLIBS) -o $@ $^
 
 install: runit-docker.so
+	mkdir -p $(DESTDIR)/sbin
+	mkdir -p $(DESTDIR)/lib
 	install -m 755 runit-docker $(DESTDIR)/sbin/
 	install -m 755 runit-docker.so $(DESTDIR)/lib/
 
