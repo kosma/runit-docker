@@ -10,7 +10,7 @@ a preloaded library - so your process list OCD isn't offended, there's just
 
 ## Usage
 
-Build with `make`, install with `make install`. Start with `docker run {blah} /sbin/init-runit-docker`.
+Build with `make`, install with `make install`. Start with `docker run {blah} /sbin/runit-docker`.
 
 ## Author
 
