@@ -2,18 +2,11 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 
-static void (*real_s_term)(int) = NULL;
-static void (*real_s_hangup)(int) = NULL;
-
-static void fake_s_term(int signum)
-{
-  real_s_hangup(signum);
-}
-
-static int (*real_sigaction)(int signum, const struct sigaction *act, struct sigaction *oldact) = NULL;
 
 int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
 {
+  static int (*real_sigaction)(int signum, const struct sigaction *act, struct sigaction *oldact) = NULL;
+
   // Retrieve the real sigaction we just shadowed.
   if (real_sigaction == NULL) {
     real_sigaction = (void *) dlsym(RTLD_NEXT, "sigaction");
@@ -21,13 +14,15 @@ int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
     unsetenv("LD_PRELOAD");
   }
 
-  if (real_s_term == NULL) {
-    // Override installed s_term() with our own.
-    real_s_term = act->sa_handler;
-    ((struct sigaction *) act)->sa_handler = fake_s_term;
-  } else if (real_s_hangup == NULL) {
-    // Save real s_hangup() for SIGTERM handling.
-    real_s_hangup = act->sa_handler;
+  if (signum == SIGTERM) {
+    // Skip this handler, it doesn't do what we want.
+    return 0;
+  }
+
+  if (signum == SIGHUP) {
+    // Install this handler for others as well.
+    real_sigaction(SIGTERM, act, oldact);
+    real_sigaction(SIGINT, act, oldact);
   }
 
   // Forward the call the the real sigaction.
