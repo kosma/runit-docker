@@ -25,5 +25,5 @@ Run `debian/rules clean build binary` to build a Debian package.
 
 ## Author
 
-runit-docker was written by Kosma Moczek &lt;kosma@kosma.pl&gt; during a single Scrum
+runit-docker was written by Kosma Moczek &lt;kosma.moczek@pixers.pl&gt; during a single Scrum
 planning meeting. Damn meetings.
