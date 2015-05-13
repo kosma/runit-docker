@@ -1,23 +1,27 @@
 # runit-docker
 
-On a scale from 1 to 10, how annoying is it that Docker uses `SIGTERM` but
-`runsvdir` expects `SIGHUP`? I guess eleven. Goddammit!
+Docker and `runsvdir` don't quite agree on what each signal means, causing
+TONS of frustration when attempting to use `runsvdir` as init under Docker.
+`runit-docker` is a plug'n'play adapter library which does signal translation
+without the overhead and nuisance of running a nanny process.
 
-No, really. You'd expect that when Docker sends SIGTERM to init (`runsvdir`
-in our case) it would behave like a proper process supervisor and kill the
-`runsv`s it manages. Except it doesn't, causing a slow, unclean container
-shutdown. I don't care whose fault this is. Docker and Runit are awesome
-and they should talk to each other.
+## Features
 
-This little wrapper fixes the interfacing SNAFU. It differs from
-the other nanny processes found on the web in that it isn't a process but
-a preloaded library - so your process list OCD isn't offended: there's only
-`runsvdir` but everything Just Works™.
+* Pressing Ctrl-C does a clean shutdown.
+* `docker stop` does a clean shutdown.
+
+Under the hood, `runit-docker` translates `SIGTERM` and `SIGINT` to `SIGHUP`.
 
 ## Usage
 
 Build with `make`, install with `make install`. Start with `docker run {blah} /sbin/runit-docker`.
 Debian support is included; build with `debian/rules binary` for easy package reuse.
+
+```
+CMD ["/sbin/runit-docker"]
+```
+
+Run `debian/rules clean build binary` to build a Debian package.
 
 ## Author
 
