@@ -14,14 +14,9 @@ Under the hood, `runit-docker` translates `SIGTERM` and `SIGINT` to `SIGHUP`.
 
 ## Usage
 
-Build with `make`, install with `make install`. Start with `docker run {blah} /sbin/runit-docker`.
-Debian support is included; build with `debian/rules binary` for easy package reuse.
-
-```
-CMD ["/sbin/runit-docker"]
-```
-
-Run `debian/rules clean build binary` to build a Debian package.
+* Build with `make`, install with `make install`.
+* Add `CMD ["/sbin/runit-docker"]` to your `Dockerfile`.
+* Run `debian/rules clean build binary` to build a Debian package.
 
 ## Author
 
