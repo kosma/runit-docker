@@ -1,12 +1,12 @@
-CFLAGS=-std=c99 -Wall -O2 -fPIC -D_POSIX_SOURCE -D_GNU_SOURCE
-LDLIBS=-ldl
+CFLAGS+=-std=c99 -Wall -O2 -fPIC -D_POSIX_SOURCE -D_GNU_SOURCE
+LDFLAGS+=-ldl
 
 PROGNAME=runit-docker
 
 all: $(PROGNAME).so
 
 %.so: %.c
-	gcc -shared $(CFLAGS) $(LDLIBS) -o $@ $^
+	gcc -shared $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 install: runit-docker.so
 	mkdir -p $(DESTDIR)/sbin
