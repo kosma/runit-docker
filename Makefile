@@ -9,7 +9,7 @@ all: $(PROGNAME).so
 	gcc -shared $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 install: runit-docker.so
-	mkdir -p $(DESTDIR)/sbin
+	mkdir -p $(DESTDIR)/usr/sbin
 	mkdir -p $(DESTDIR)/usr/lib/runit-docker/
 	install -m 755 $(PROGNAME) $(DESTDIR)/sbin/
 	install -m 755 $(PROGNAME).so $(DESTDIR)/usr/lib/runit-docker/
