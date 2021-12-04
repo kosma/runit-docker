@@ -6,7 +6,7 @@ PROGNAME=runit-docker
 all: $(PROGNAME).so
 
 %.so: %.c
-	gcc -shared $(CFLAGS) $(LDFLAGS) -o $@ $^
+	gcc -shared $(CFLAGS) $^ $(LDFLAGS) -o $@
 
 install: runit-docker.so
 	mkdir -p $(DESTDIR)/usr/sbin
